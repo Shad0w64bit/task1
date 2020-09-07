@@ -6,10 +6,28 @@ mongodb_replication_oplogsize: 1024               # specifies a maximum size in 
 mongodb_package: mongodb
 mongodb_version: "3.6"
 mongodb_security_authorization: "enabled"
+mongodb_security_keyfile: /etc/mongodb-keyfile
+mongodb_keyfile_content: |
+  e1viLMxNc5FGUt94L3j+ks6malXvzqFoM4PXhw4KXUxvDvKKu9Pjxvd9k9gCKLA/
+  XPuvNfY4gzNs8DvcrJ58vyT80vmGXVaKN6YGBBzqdfBzw8sQCwP9wlOEjp2/FUf8
+  ZGg+JrExBdJBotTe5r2alkjZJ5/w4kBWpsEMl06PAEH41xgpXlBpuTxzphjOWJaO
+  prFvkvbok0sNFI87blIQp0P25ExsWgZsIXObQV7VEReLVj/okX95OZwYOPznXoCj
+  /57a+tnRuRsXDKXa5ZZ+8Q/0Da9I2xRHDoEUi+7zJ0tfLRxk7Gu/2jJVnFKKGtQj
+  65vo7pYcaJuT2xRz8sJ9VHxFwlgffPYOCEXxxezpoG7x/hrM9xevxHUQ7v9EMCdp
+  ZlkruSI4/FE2V7a1m98Nl0nXTub9G+IN8L4q7StEjpxz1VG95Nkm+gk+2+XSqDWC
+  DPQhbZHnJCJnLggfG+Bry0n2VLWggv8xgYKB8HRaNoy7ErR6TdWiJCKHuSsKcGH7
+  aAYPPaVM84NbXUDwh5qTytD+Dp0t/HfNsoNdhp4tNkFTH7Xkcs+if6pltrNBkZFi
+  zxPTu/C0rFLe2I8C3nmvHFjcZDNUZVSH2568mRusSUGe/t3BtbKWZ9yoB3LrJquz
+  65WdnadgzT7BiiCBLZ4CaJr59bwb9Z2pF3NyJuVYzgoo5y5KN//cZ/paYxqjqseb
+  5n5Sqwow8n2POJs3lc0wYXrr3CaC8Dz4AqQhDmsaIXr8pzitemOkG6MaSw5FCAnX
+  FUhUKOYPzg8Ea7x11n4+OAEISmaB7O3fhqLOHjAhWyAZZhcwJJboDA7bxwLip7Hq
+  Al3bxuFHGvEp4QBtS7TwcKlbDFNyVlyFBgl7W6nSqDOyDmI+x1Y+x3moLAmpN6k4
+  cMBtgcZKe09LdsGw8/wK0LRtDZly4NWaf8wvLLDsE3pG0ST9vOTaKDXdccTpDUXE
+  Q+DuU9tRdVtJs5BrFezlxbQEphN1
 mongodb_set_parameters: { "enableLocalhostAuthBypass": "true", "authenticationMechanisms": "SCRAM-SHA-1,MONGODB-CR" }
 mongodb_user_admin_name: siteUserAdmin
 mongodb_user_admin_password: B4sDAyjgXFrgsBUxyNXCvach
-mongodb_net_bindip: 127.0.0.1
+mongodb_net_bindip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
 mongodb_login_host: "{{ hostvars[groups['mongo_master'][0]].ansible_default_ipv4.address }}"
 
 mongodb_users:
@@ -24,6 +42,7 @@ ufw_rules:
   - { port: 22, rule: allow, from_ip: '51.15.60.8', comment: 'Allow to ssh from our ip1' }
   - { port: 22, rule: allow, from_ip: '94.159.45.158', comment: 'Allow to ssh from our ip2' }
   - { port: 22, rule: allow, from_ip: '51.15.60.8', comment: 'Allow to ssh from our ip3' }
+  - { port: 22, rule: allow, from_ip: '195.112.122.234', comment: 'Allow to ssh from our ip4' }
   - { port: 27017, rule: allow, from_ip: "{{ hostvars[groups['mongo'][0]].ansible_eth0.ipv4.address }}", comment: 'Allow to mongo from mongo1' }
   - { port: 27017, rule: allow, from_ip: "{{ hostvars[groups['mongo'][1]].ansible_eth0.ipv4.address }}", comment: 'Allow to mongo from mongo2' }
   - { port: 27017, rule: allow, from_ip: "{{ hostvars[groups['mongo'][2]].ansible_eth0.ipv4.address }}", comment: 'Allow to mongo from mongo3' }
@@ -32,4 +51,4 @@ ufw_rules:
 ufw_default_input_policy: DROP
 ufw_default_output_policy: ACCEPT
 ufw_default_forward_policy: DROP
-ufw_reset: no
+ufw_reset: yes
