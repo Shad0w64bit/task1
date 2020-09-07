@@ -51,4 +51,4 @@ ufw_rules:
 ufw_default_input_policy: DROP
 ufw_default_output_policy: ACCEPT
 ufw_default_forward_policy: DROP
-ufw_reset: no
+ufw_reset: yes
